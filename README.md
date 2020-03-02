@@ -1,0 +1,2 @@
+# Boom-Bust_SentimentAnalysis
+A unique project in which we aim to analyse a large corpus to find if the author's description of the protagonist's sentiments correlate to the GDP of the era the text was written in. This is a project undertaken by Shuchita Kapoor, Chavvi Chandani, Akash Verma and Kavithvajen Kamaraj as part of coursework for the module 'Text Analytics (CS7IS4)' at Trinity College Dublin.
