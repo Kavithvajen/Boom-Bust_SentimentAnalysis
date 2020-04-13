@@ -7,16 +7,23 @@ Original file is located at
     https://colab.research.google.com/drive/1l3C_JnHx63l9q9eHMAdsd7DdRg1pP7cW
 """
 
-from nltk import word_tokenize
-from textblob import TextBlob
+!pip install vaderSentiment
 
 import nltk
 nltk.download('punkt')
-nltk.download('averaged_perceptron_tagger')
 nltk.download('brown')
+nltk.download('averaged_perceptron_tagger')
+from nltk import word_tokenize
+
+from textblob import TextBlob
+from textblob import sentiments
+
+import os
+
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 def readTxt():
-  text=open('/content/drive/My Drive/The secret of old  clock.txt')
+  text=open('/content/drive/My Drive/Anthony Adverse.txt')
   text= text.read()
   return text
 
@@ -66,19 +73,191 @@ def possible_protagonist(top10,tagged_dict):
     count = 0
     for i in range(0,len(tagged_dict)):
       if(tagged_dict[i][0] == word or tagged_dict[i][0] == word.title()):  
-        if(tagged_dict[i][1] in proper_noun):
+        if(tagged_dict[i][1] in proper_noun and tagged_dict[i+1][1] in verbs):
           if(word not in pp):
             pp.append(word)
-  return pp[:1]
+  return pp
 
 a= readTxt()
+
 b= tokenizeTxt(a)
+
 c= remove_stopwords(b)
+
 d= tokenTostring(c)
+
 e= remove_puntuations(d)
+
 f= blob(e)
+
 g= top10words(f)
+
 h= word_tagging(f)
+
 i=possible_protagonist(g,h)
 
 i
+
+#I don't hate you
+#You can do better
+#I don't love you
+#I don't love you
+#string = "Sun rises in the east"
+
+# from textblob import TextBlob
+# def sentiment_textblob(feedback): 
+#   senti = TextBlob(feedback) 
+#   polarity = senti.sentiment.polarity 
+#   if -1 <= polarity < -0.5: 
+#     label = 'very bad' 
+#   elif -0.5 <= polarity < -0.1: 
+#     label = 'bad' 
+#   elif -0.1 <= polarity < 0.2: 
+#     label = 'ok' 
+#   elif 0.2 <= polarity < 0.6: 
+#     label = 'good' 
+#   elif 0.6 <= polarity <= 1: 
+#     label = 'positive' 
+#   return (polarity, label) 
+# sentiment = sentiment_textblob(o)
+
+dataset = os.listdir("/content/drive/My Drive/Reference Resolved Content")
+dataset
+
+"""### Sentiment Analysis using TextBlob for Co-Referenced Text"""
+
+for file in dataset:
+        path = "/content/drive/My Drive/Reference Resolved Content/" + file
+        text=open(path)
+        text= text.read()
+        blob=TextBlob(text)
+        polarity = blob.sentiment.polarity 
+        if -1 <= polarity < -0.5: 
+          label = 'very bad' 
+        elif -0.5 <= polarity < -0.1: 
+          label = 'bad' 
+        elif -0.1 <= polarity < 0.2: 
+          label = 'ok' 
+        elif 0.2 <= polarity < 0.6: 
+          label = 'good' 
+        elif 0.6 <= polarity <= 1: 
+          label = 'positive' 
+        #print(file,polarity,label)
+        print("Book:"+" "+ file +"\t"+"Polarity"+" "+str(polarity)+"\t"+"Sentiment:"+" "+ label)
+
+# for file in dataset:
+#         file = "/content/drive/My Drive/Reference Resolved Content/" + file
+#         text=open(file)
+#         text= text.read()
+#         blob=TextBlob(text)
+#         sentiment = blob.sentiment
+#         print(sentiment)
+
+"""### Sentiment Analysis using Vader for Co-Referenced Text"""
+
+analyser = SentimentIntensityAnalyzer()
+
+for file in dataset:
+        path = "/content/drive/My Drive/Reference Resolved Content/" + file
+        text=open(path)
+        text= text.read()
+        score = analyser.polarity_scores(text)
+        print("Book:"+" "+file+"\t"+"Sentiment:"+" "+str(score))
+
+# for file in dataset:
+#         file = "/content/drive/My Drive/Reference Resolved Content/" + file
+#         text=open(file)
+#         text= text.read()
+#         score = analyser.polarity_scores(text)
+#         print(score)
+
+"""### Sentiment Analysis using TextBlob for entire book"""
+
+dataset = os.listdir("/content/drive/My Drive/Books during great depression")
+dataset
+
+for file in dataset:
+        path = "/content/drive/My Drive/Books during great depression/" + file
+        text=open(path)
+        text= text.read()
+        blob=TextBlob(text)
+        polarity = blob.sentiment.polarity 
+        if -1 <= polarity < -0.5: 
+          label = 'very bad' 
+        elif -0.5 <= polarity < -0.1: 
+          label = 'bad' 
+        elif -0.1 <= polarity < 0.2: 
+          label = 'ok' 
+        elif 0.2 <= polarity < 0.6: 
+          label = 'good' 
+        elif 0.6 <= polarity <= 1: 
+          label = 'positive' 
+        #print(file,polarity,label)
+        print("Book:"+" "+ file +"\t"+"Polarity"+" "+str(polarity)+"\t"+"Sentiment:"+" "+ label)
+
+# for file in dataset:
+#         file = "/content/drive/My Drive/Books during great depression/" + file
+#         text=open(file)
+#         text= text.read()
+#         blob=TextBlob(text)
+#         sentiment = blob.sentiment
+#         print(sentiment)
+
+"""### Sentiment Analysis using Vader for entire book"""
+
+analyser = SentimentIntensityAnalyzer()
+
+for file in dataset:
+        path = "/content/drive/My Drive/Books during great depression/" + file
+        text=open(path)
+        text= text.read()
+        score = analyser.polarity_scores(text)
+        print("Book:"+" "+file+"\t"+"Sentiment:"+" "+str(score))
+
+"""### Sentiment Analysis using TextBlob for just Protagonist"""
+
+dataset = os.listdir("/content/drive/My Drive/Filtered Protagonist")
+dataset
+
+for file in dataset:
+        path = "/content/drive/My Drive/Filtered Protagonist/" + file
+        text=open(path)
+        text= text.read()
+        blob=TextBlob(text)
+        polarity = blob.sentiment.polarity 
+        if -1 <= polarity < -0.5: 
+          label = 'very bad' 
+        elif -0.5 <= polarity < -0.1: 
+          label = 'bad' 
+        elif -0.1 <= polarity < 0.2: 
+          label = 'ok' 
+        elif 0.2 <= polarity < 0.6: 
+          label = 'good' 
+        elif 0.6 <= polarity <= 1: 
+          label = 'positive' 
+        #print(file,polarity,label)
+        print("Book:"+" "+ file +"\t"+"Polarity"+" "+str(polarity)+"\t"+"Sentiment:"+" "+ label)
+
+# for file in dataset:
+#         file = "/content/drive/My Drive/Filtered Protagonist/" + file
+#         text=open(file)
+#         text= text.read()
+#         blob=TextBlob(text)
+#         sentiment = blob.sentiment
+#         print(sentiment)
+
+"""### Sentiment Analysis using Vader for just Protagonist"""
+
+analyser = SentimentIntensityAnalyzer()
+
+for file in dataset:
+        path = "/content/drive/My Drive/Filtered Protagonist/" + file
+        text=open(path)
+        text= text.read()
+        score = analyser.polarity_scores(text)
+        print("Book:"+" "+file+"\t"+"Sentiment:"+" "+str(score))
+
+# Textblob : -1 to 1
+# Stanford NLP : 0 to 4
+# Vader : -1 to 1
+
